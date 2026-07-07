@@ -113,9 +113,9 @@ Le notebook intègre des composants d'interface utilisateur avancés pour explor
 │   ├── departements-france.csv             # Référentiel géographique
 │   └── [Fichiers sources bruts INSEE/SSMSI]
 ├── Analyse_Econometrique_Violence.ipynb     # Notebook principal de production
-└── README.md
-```                            # Présentation du projet
+└── README.md                              # Présentation du projet
 
+```
 
 ---
 
