@@ -1,18 +1,87 @@
-# Analysis of Violence Determinants in France
+Déterminants de la Violence en France : Approche Économétrique Départementale
+1. Introduction & Problématique
+L’insécurité et la violence en France occupent une place centrale dans le débat public. Pourtant, ces phénomènes souffrent souvent de simplifications ou de récupérations politiques. Ce projet adopte une approche rigoureuse et scientifique pour identifier et quantifier les facteurs sociodémographiques, économiques et territoriaux qui influencent différents types de violences à l'échelle des 101 départements français.
+2. Architecture des Données
+Variables Explicatives (X) — Causes & Contexte
+Nom Technique	Unité	Description	Source
+densite_population	hab/km²	Densité de population	INSEE
+population_insee	Nombre	Population totale du département	INSEE
+taux_chomage	%	Part des actifs au chômage	INSEE
+taux_pauvrete_60	%	Part sous le seuil de pauvreté (à 60%)	INSEE
+niveau_vie_median	Euros	Revenu annuel médian	INSEE
+part_jeunes_difficulte_lecture	%	Difficultés de lecture décelées (JDC)	Min. Éducation
+part_non_diplomes	%	Jeunes (15-24 ans) non diplômés et non scolarisés	INSEE
+part_moins_25_ans	%	Part de la population âgée de moins de 25 ans	INSEE
+part_immigres	%	Part des immigrés dans la population	INSEE
+part_descendants_immigres	%	Part des descendants d'immigrés	INSEE
+trafic_stupefiants	Taux ‰	Taux de faits constatés pour trafic de stupéfiants	SSMSI
+usage_stupefiants_total	Taux ‰	Taux de faits constatés pour usage de stupéfiants	SSMSI
+Variables Dépendantes (Y) — Crimes & Délits
+Toutes les variables de criminalité proviennent du SSMSI et sont exprimées en Taux pour 1 000 habitants (données 2020) afin de neutraliser l'effet de taille de la population.
+Crimes Graves : homicides, tentatives_homicide, violences_sexuelles.
+Atteintes aux Personnes : violences_physiques_hors_famille, violences_physiques_intrafamiliales.
+Atteintes aux Biens : vols_avec_armes, vols_violents_sans_arme, vols_sans_violence, cambriolages_logement, vols_vehicule, vols_dans_vehicules, vols_accessoires_vehicules.
+Autres : destructions_degradations, escroqueries_fraudes.
+3. Pipeline de Traitement des Données (ETL)
+Le projet suit un pipeline modulaire strict divisé en quatre phases principales :
+[1. Fetch (Extraction)] -> [2. Clean (Normalisation)] -> [3. Structure (Jointure)] -> [4. Model (Régression OLS)]
+1. Fetch
+Centralisation de sources hétérogènes : fichiers CSV, extractions Excel multi-onglets et requêtes de tables HTML (pd.read_html) directement depuis le site de l'INSEE.
+Python
+import pandas as pd
+import numpy as np
+import statsmodels.formula.api as smf
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-## Overview
-This project is an econometric study aimed at identifying and quantifying the socio-economic factors influencing violence levels across French regions. It was conducted as part of my Master's degree in Applied Mathematics and Statistics at the University of Bordeaux.
-
-## Key Features
-- **Data Engineering:** Collection, cleaning, and merging of heterogeneous Open Data sources.
-- **Exploratory Data Analysis (EDA):** Visualization of spatial correlations and statistical distributions.
-- **Econometric Modeling:** Implementation of multiple linear regressions with **Backward Selection** to ensure model robustness.
-- **Statistical Validation:** Hypothesis testing on coefficients and residual analysis.
-
-## Technologies Used
-- **Language:** Python
-- **Environment:** Jupyter Lab
-- **Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Statsmodels
-
-## Results
-The model highlights the impact of ... on regional safety levels, providing a data-driven basis for strategic decision-making.
+# Exemple d'extraction HTML (Revenu et Pauvreté 2020)
+url = 'https://www.insee.fr/fr/statistiques/6692414?sommaire=6692394#tableau-figure1_radio1'
+df = pd.read_html(url, decimal=',', thousands=' ')
+niveau_vie_median, taux_pauvrete = df[0], df[2]
+2. Clean
+Suppression des en-têtes et lignes de commentaires spécifiques aux formats de publication de l'INSEE.
+Standardisation des identifiants territoriaux : application de str.zfill(2) pour harmoniser les codes départements (ex: 1 devient 01).
+Gestion des valeurs masquées par le secret statistique (conversion des chaînes 'ns' en NaN).
+Pivotement de la base SSMSI pour transformer une structure longue en matrice d'analyse large (une colonne par indicateur criminel).
+3. Structure
+Jointure gauche systématique (merge) basée sur les référentiels géographiques officiels (Etalab).
+Filtrage de la portée de l'étude à la France métropolitaine (exclusion des codes commençant par 97).
+Réorganisation logique des colonnes : Métadonnées géographiques → Variables Explicatives (X) → Variables Expliquées (Y).
+Persistance de la structure nettoyée dans un fichier pivot base_departements_complete_2020.csv.
+4. Approche Méthodologique & Modélisation
+Une classification hiérarchique (méthode de Ward basée sur des corrélations de Spearman) a mis en évidence trois pôles distincts de délinquance. Pour éviter les biais de multicolinéarité et capturer les dynamiques réelles, chaque pôle est modélisé de manière indépendante via des régressions linéaires par moindres carrés ordinaires (OLS). Les variables finales ont été sélectionnées par procédure Stepwise (Backward Elimination).
+Modèle 1 : Cluster Crimes Graves (Focus Homicides)
+Les violences extrêmes s'avèrent hautement stochastiques à l'échelle départementale (R 
+2
+ =0.182). Seul le chômage émerge comme signal structurel.
+homicides=−0.0063+0.0022×taux_chomage
+Modèle 2 : Cluster Tensions Urbaines et Délinquance de Rue
+Création de l'Indice de Tension Urbaine (ITU) par sommation des variables cohérentes du bloc (dégradations + violences physiques).
+ITU=0.7967+0.8456×ln(densite_population)+0.3285×part_non_diplomes
+Performance : R 
+2
+ =0.615 (Modèle très robuste).
+Enseignement : Le déficit de formation (absence de diplôme) est le prédicteur social le plus puissant, surpassant l'impact du revenu seul.
+Modèle 3 : Cluster Vols et Urbanisation
+Agrégation des infractions d'appropriation sous la variable unique Total_Vols afin de stabiliser le signal en lissant la volatilité locale.
+Total_Vols=−17.4076+5.6564×ln(densite_population)+0.4666×taux_pauvrete_60
+Performance : R 
+2
+ =0.621.
+Enseignement : Le modèle décrit une mécanique d'opportunité spatiale pure : la délinquance d'appropriation se cristallise là où la précarité économique (+4.67 vols pour 10 points de pauvreté) rencontre la concentration de cibles engendrée par la densité urbaine.
+5. Visualisations Dynamiques
+Le notebook intègre des composants d'interface utilisateur avancés pour explorer les résultats :
+Analyse de performance interactive : Un menu déroulant ipywidgets lié à des graphiques Plotly permettant de confronter graphiquement les valeurs réelles aux valeurs prédites par les modèles. Cela met en évidence l'effet de shrinkage (régression vers la moyenne) sur les variables à faible pouvoir explicatif.
+Cartographie interactive double : Cartes choroplèthes propulsées par Folium et structurées via un fichier GeoJSON simplifié de la France. L'affichage juxtapose systématiquement la carte des effectifs bruts (biaisée par la démographie) et la carte des taux pour 1 000 habitants, permettant une lecture objective de l'insécurité territoriale.
+6. Structure du Dépôt
+├── DATA_PROJET/
+│   ├── base_departements_complete_2020.csv  # Base finale consolidée
+│   ├── departements-france.csv             # Référentiel géographique
+│   └── [Fichiers sources bruts INSEE/SSMSI]
+├── Analyse_Econometrique_Violence.ipynb     # Notebook principal de production
+└── README.md                                # Présentation du projet
+7. Spécifications Techniques
+Langage : Python 3.10+
+Modélisation Économétrique : statsmodels (pour l'extraction des summaries statistiques et l'analyse des résidus)
+Visualisation Spatiale : folium, branca, plotly
+Formatage des Tableaux : itables pour un rendu HTML dynamique au sein du notebook.
