@@ -106,12 +106,15 @@ Le notebook intègre des composants d'interface utilisateur avancés pour explor
 ## 6. Structure du Dépôt
 
 
+```text
+.
 ├── DATA_PROJET/
 │   ├── base_departements_complete_2020.csv  # Base finale consolidée
 │   ├── departements-france.csv             # Référentiel géographique
 │   └── [Fichiers sources bruts INSEE/SSMSI]
 ├── Analyse_Econometrique_Violence.ipynb     # Notebook principal de production
-└── README.md                                # Présentation du projet
+└── README.md
+```                            # Présentation du projet
 
 
 ---
