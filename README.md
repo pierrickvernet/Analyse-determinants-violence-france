@@ -108,7 +108,7 @@ Le notebook intègre des composants d'interface utilisateur avancés pour explor
 
 ```text
 .
-├── DATA_PROJET/
+├── data/
 │   ├── base_departements_complete_2020.csv  # Base finale consolidée
 │   ├── departements-france.csv             # Référentiel géographique
 │   └── [Fichiers sources bruts INSEE/SSMSI]
