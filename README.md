@@ -120,9 +120,9 @@ Une classification ascendante hiérarchique (méthode de Ward basée sur la matr
 *   **Analyse cartographique** : Cartes choroplèthes interactives (`Folium` + `GeoJSON`) juxtaposant les effectifs bruts et les taux pour 1 000 habitants afin d'éviter les biais d'interprétation liés à la taille des populations.
 
 ### Limites et perspectives
-*   **Inférence causale vs corrélation** : L'approche par régression MCO (OLS) identifie des associations statistiques et des corrélations structurelles, mais ne permet pas d'établir des relations de causalité strictes en l'absence de variables instrumentales ou d'un cadre quasi-expérimental.
+*   **Inférence causale vs corrélation** : L'approche par régression MCO (OLS) identifie des associations statistiques et des corrélations structurelles, mais ne permet pas d'établir des relations de causalité strictes en l'absence de variables instrumentales.
 *   **Biais de variables omises** : La spécification actuelle ne contrôle pas certaines variables démographiques majeures (ex. la part des hommes jeunes, statistiquement surreprésentés dans les actes criminels), ni des facteurs institutionnels locaux (ex. effectifs de police/gendarmerie ou politiques de prévention ciblées).
-*   **Maillage géographique** : Une analyse infra-départementale (communes ou carreaux IRIS) permettrait d'atténuer le biais d'agrégation spatiale (*Modifiable Areal Unit Problem - MAUP*) et d'isoler des micro-dynamiques locales.
+*   **Maillage géographique** : Une analyse infra-départementale (niveau communal) permettrait d'atténuer le biais d'agrégation spatiale (*Modifiable Areal Unit Problem - MAUP*) et d'isoler des micro-dynamiques locales.
 *   **Autocorrélation spatiale** : L'utilisation de modèles économétriques spatiaux (ex. SAR, SEM ou SDM) permettrait de modéliser les effets de débordement (*spatial spillovers*) et la dépendance géographique entre départements voisins.
 
 ---
