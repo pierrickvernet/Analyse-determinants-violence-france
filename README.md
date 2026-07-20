@@ -3,7 +3,7 @@
 ## 1. INTRODUCTION
 
 ### Cadre de réalisation
-Projet d'analyse économétrique et quantitative sur données territoriales françaises, réalisé dans le cadre de l'UE `outil informatique pour le traitement des données` .
+Projet d'analyse économétrique et quantitative sur données territoriales françaises, réalisé dans le cadre de l'UE `outil informatique pour le traitement des données` de mon M1 IREF.
 
 ### Présentation du sujet et problématique
 L'insécurité et la criminalité en France suscitent de vifs débats publics et politiques, souvent caractérisés par une simplification des facteurs explicatifs. Ce projet adopte une démarche scientifique et empirique visant à identifier et quantifier les déterminants sociodémographiques, économiques et territoriaux de la délinquance à l'échelle des 101 départements français.
@@ -98,8 +98,10 @@ Une classification ascendante hiérarchique (méthode de Ward basée sur la matr
 *   **Analyse cartographique** : Cartes choroplèthes interactives (`Folium` + `GeoJSON`) juxtaposant les effectifs bruts et les taux pour 1 000 habitants afin d'éviter les biais d'interprétation liés à la taille des populations.
 
 ### Limites et perspectives
-*   **Modélisation spatiale** : L'intégration d'un modèle économétrique spatial (type SAR/SEM) permettrait de prendre en compte l'autocorrélation spatiale et les effets de débordement interdépartementaux.
-*   **Maillage géographique** : Une analyse à l'échelle communale ou infra-communale (IRIS) affinerait la détection des micro-dynamiques locales.
+*   **Inférence causale vs corrélation** : L'approche par régression MCO (OLS) identifie des associations statistiques et des corrélations structurelles, mais ne permet pas d'établir des relations de causalité strictes en l'absence de variables instrumentales ou d'un cadre quasi-expérimental.
+*   **Biais de variables omises** : La spécification actuelle ne contrôle pas certaines variables démographiques majeures (ex. la part des hommes jeunes, statistiquement surreprésentés dans les actes criminels), ni des facteurs institutionnels locaux (ex. effectifs de police/gendarmerie ou politiques de prévention ciblées).
+*   **Maillage géographique** : Une analyse infra-départementale (communes ou carreaux IRIS) permettrait d'atténuer le biais d'agrégation spatiale (*Modifiable Areal Unit Problem - MAUP*) et d'isoler des micro-dynamiques locales.
+*   **Autocorrélation spatiale** : L'utilisation de modèles économétriques spatiaux (ex. SAR, SEM ou SDM) permettrait de modéliser les effets de débordement (*spatial spillovers*) et la dépendance géographique entre départements voisins.
 
 ---
 
