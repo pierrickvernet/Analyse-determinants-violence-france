@@ -1,4 +1,4 @@
-# DÉTERMINANTS DE LA VIOLENCE EN FRANCE : APPROCHE ÉCONOMÉTRIQUE DÉPARTEMENTALE
+# Déterminants de la Violence en France : Approche Économétrique Départementale
 
 ## 1. INTRODUCTION
 
