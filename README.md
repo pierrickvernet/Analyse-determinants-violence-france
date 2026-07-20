@@ -85,6 +85,7 @@ Une classification ascendante hiérarchique (méthode de Ward basée sur la matr
     $$\text{homicides} = -0.0063 + 0.0022 \times \text{taux\_chomage}$$
 *   **R²** : $0.182$
 *   **Analyse** : Les crimes extrêmes présentent une composante stochastique marquée au niveau départemental. Seul le taux de chômage ressort comme variable explicative statistiquement significative.
+*   $$\text{homicides} = -0.0063 + 0.0022 \times \text{taux\_chomage}$$
 
 #### Modèle 2 : Cluster Tensions Urbaines et Délinquance de Rue
 *   **Variable synthétique** : Indice de Tension Urbaine (ITU) construit par agrégation des dégradations et des violences physiques (intrafamiliales et hors famille).
