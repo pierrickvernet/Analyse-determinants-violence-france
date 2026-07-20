@@ -3,7 +3,7 @@
 ## 1. INTRODUCTION
 
 ### Cadre de réalisation
-Projet d'analyse économétrique et quantitative sur données territoriales françaises.
+Projet d'analyse économétrique et quantitative sur données territoriales françaises, réalisé dans le cadre de l'UE `outil informatique pour le traitement des données` .
 
 ### Présentation du sujet et problématique
 L'insécurité et la criminalité en France suscitent de vifs débats publics et politiques, souvent caractérisés par une simplification des facteurs explicatifs. Ce projet adopte une démarche scientifique et empirique visant à identifier et quantifier les déterminants sociodémographiques, économiques et territoriaux de la délinquance à l'échelle des 101 départements français.
