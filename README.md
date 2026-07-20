@@ -82,22 +82,21 @@ Une classification ascendante hiérarchique (méthode de Ward basée sur la matr
 
 #### Modèle 1 : Cluster Crimes Graves (Focus Homicides)
 *   **Spécification** : 
-    $$\text{homicides} = -0.0063 + 0.0022 \times \text{taux\_chomage}$$
+    $$\text{Homicides} = -0.0063 + 0.0022 \times \text{TauxChomage}$$
 *   **R²** : $0.182$
 *   **Analyse** : Les crimes extrêmes présentent une composante stochastique marquée au niveau départemental. Seul le taux de chômage ressort comme variable explicative statistiquement significative.
-   $$\text{Homicides} = -0.0063 + 0.0022 \times \text{TauxChomage}$$
 
 #### Modèle 2 : Cluster Tensions Urbaines et Délinquance de Rue
 *   **Variable synthétique** : Indice de Tension Urbaine (ITU) construit par agrégation des dégradations et des violences physiques (intrafamiliales et hors famille).
 *   **Spécification** : 
-    $$\text{ITU} = 0.7967 + 0.8456 \times \ln(\text{densite\_population}) + 0.3285 \times \text{part\_non\_diplomes}$$
+    $$\text{ITU} = 0.7967 + 0.8456 \times \ln(\text{DensitePopulation}) + 0.3285 \times \text{PartNonDiplomes}$$
 *   **R²** : $0.615$
 *   **Analyse** : Le modèle présente une forte puissance explicative. Le niveau de sous-diplômation apparaît comme un prédicteur structurel plus explicatif que le seul revenu monétaire.
 
 #### Modèle 3 : Cluster Vols et Urbanisation
 *   **Variable synthétique** : Agrégation des infractions d'appropriation (`Total_Vols`).
 *   **Spécification** : 
-    $$\text{Total\_Vols} = -17.4076 + 5.6564 \times \ln(\text{densite\_population}) + 0.4666 \times \text{taux\_pauvrete\_60\%}$$
+    $$\text{TotalVols} = -17.4076 + 5.6564 \times \ln(\text{DensitePopulation}) + 0.4666 \times \text{TauxPauvrete}$$
 *   **R²** : $0.621$
 *   **Analyse** : Les vols répondent à une logique d'opportunité spatiale : ils s'intensifient lorsque la précarité économique s'associe à une forte densité d'opportunités d'infraction.
 
