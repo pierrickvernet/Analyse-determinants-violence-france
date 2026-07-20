@@ -18,26 +18,48 @@ L'analyse apporte un éclairage statistique rigoureux utile aux analystes de pol
 ### Origine des données et périmètre
 L'étude exploite des données officielles associant les statistiques administratives de l'INSEE, du Ministère de l'Éducation Nationale et du Service Statistique Ministériel de la Sécurité Intérieure (SSMSI). Le périmètre d'analyse couvre l'année 2020 pour l'ensemble de la France métropolitaine (les départements d'Outre-Mer étant exclus pour des raisons d'homogénéité territoriale).
 
-### Variables explicatives (X)
-*   **densite_population** : Densité de population (habitants / km²) [INSEE]
-*   **population_insee** : Population totale du département [INSEE]
-*   **taux_chomage** : Part des actifs au chômage (%) [INSEE]
-*   **taux_pauvrete_60%** : Taux de pauvreté au seuil de 60% du revenu médian (%) [INSEE]
-*   **niveau_vie_median** : Niveau de vie médian annuel (Euros) [INSEE]
-*   **part_jeunes_difficulte_lecture** : Part des jeunes en difficulté de lecture à la JDC (%) [Ministère de l'Éducation Nationale]
-*   **part_non_diplomes** : Part des 15-24 ans non diplômés et non scolarisés (%) [INSEE]
-*   **part_moins_25_ans** : Part de la population âgée de moins de 25 ans (%) [INSEE]
-*   **part_immigres** : Part des immigrés dans la population totale (%) [INSEE]
-*   **part_descendants_immigres** : Part des descendants d'immigrés (%) [INSEE]
-*   **trafic_stupefiants** : Taux de faits constatés pour trafic de stupéfiants (‰) [SSMSI]
-*   **usage_stupefiants_total** : Taux de faits constatés pour usage de stupéfiants (‰) [SSMSI]
 
-### Variables dépendantes (Y)
-Afin de neutraliser l'effet de taille démographique, l'ensemble des indicateurs de criminalité est exprimé en taux pour 1 000 habitants (données 2020) :
-*   **Crimes Graves** : Homicides, tentatives d'homicide, violences sexuelles.
-*   **Atteintes aux Personnes** : Violences physiques intrafamiliales, violences physiques hors famille.
-*   **Atteintes aux Biens** : Vols avec armes, vols violents sans arme, vols sans violence, cambriolages de logement, vols de véhicule, vols dans les véhicules, vols d'accessoires sur véhicules.
-*   **Autres infractions** : Destructions et dégradations, escroqueries et fraudes.
+### 1. Variables Explicatives (X) — Causes & Contexte
+
+| Nom Technique | Unité | Description | Source | Lien URL |
+| :--- | :--- | :--- | :--- | :--- |
+| `densite_population` | **hab/km²** | Densité de population | INSEE | [Lien](https://www.insee.fr/fr/statistiques/5544529?sommaire=5435421#tableau-figure2) |
+| `population_insee` | **Nombre** | Population totale du département | INSEE | [Lien](https://www.insee.fr/fr/statistiques/5544529?sommaire=5435421#tableau-figure2) |
+| `taux_chomage` | **%** | Part des actifs au chômage | INSEE | [Lien](https://www.insee.fr/fr/statistiques/5391982?sommaire=5392045) |
+| `taux_pauvrete_60` | **%** | Part sous le seuil de pauvreté | INSEE | [Lien](https://www.insee.fr/fr/statistiques/6692414?sommaire=6692394#tableau-figure1_radio1) |
+| `niveau_vie_median` | **Euros** | Revenu annuel médian | INSEE | [Lien](https://www.insee.fr/fr/statistiques/6692414?sommaire=6692394#tableau-figure1_radio1) |
+| `part_jeunes_difficulte_lecture` | **%** | Difficultés de lecture (JDC) | Ministère Éducation | [Lien](https://www.education.gouv.fr/journee-defense-et-citoyennete-2020-pres-d-un-jeune-francais-sur-dix-en-difficulte-de-lecture-323603) |
+| `part_non_diplomes` | **%** | Jeunes (15-24 ans) non diplômés | INSEE | [Lien](https://www.insee.fr/fr/statistiques/5020064?sommaire=5040030) |
+| `part_moins_25_ans` | **%** | Part de la population < 25 ans | INSEE | [Lien](https://www.insee.fr/fr/statistiques/5544529?sommaire=5435421#tableau-figure2) |
+| `part_immigres` | **%** | Part des immigrés | INSEE | [Lien](https://www.insee.fr/fr/statistiques/6793282?sommaire=6793391) |
+| `part_descendants_immigres` | **%** | Part des descendants d'immigrés | INSEE | [Lien](https://www.insee.fr/fr/statistiques/6793282?sommaire=6793391) |
+| `trafic_stupefiants` | **Taux ‰** | Trafic de stupéfiants | SSMSI | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `usage_stupefiants_total` | **Taux ‰** | Usage de stupéfiants | SSMSI | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+
+---
+
+### 2. Variables Dépendantes (Y) — Crimes & Délits
+
+| Nom Technique | Unité | Libellé de l'Indicateur | Source & Lien |
+| :--- | :--- | :--- | :--- |
+| `homicides` | **Taux ‰** | Homicides | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `tentatives_homicide` | **Taux ‰** | Tentatives d'homicide | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_physiques_hors_famille` | **Taux ‰** | Violences physiques hors cadre familial | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_physiques_intrafamiliales` | **Taux ‰** | Violences physiques intrafamiliales | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_sexuelles` | **Taux ‰** | Violences sexuelles | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_avec_armes` | **Taux ‰** | Vols commis avec une arme | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_violents_sans_arme` | **Taux ‰** | Vols violents sans arme | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_sans_violence` | **Taux ‰** | Vols sans violence contre des personnes | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `cambriolages_logement` | **Taux ‰** | Cambriolages de logement | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_vehicule` | **Taux ‰** | Vols de véhicule | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_dans_vehicules` | **Taux ‰** | Vols dans les véhicules | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_accessoires_vehicules` | **Taux ‰** | Vols d'accessoires sur véhicules | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `destructions_degradations` | **Taux ‰** | Destructions et dégradations volontaires | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `escroqueries_fraudes` | **Taux ‰** | Escroqueries et fraudes | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+
+---
+
+**Référentiel Géographique :** [Départements de France (Etalab)](https://www.data.gouv.fr/datasets/departements-de-france/)
 
 ---
 
