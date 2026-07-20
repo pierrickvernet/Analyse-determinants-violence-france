@@ -6,7 +6,7 @@
 Projet d'analyse économétrique et quantitative sur données territoriales françaises, réalisé dans le cadre de l'UE outil informatique pour le traitement des données de mon M1 IREF.
 
 ### Présentation du sujet et problématique
-L'insécurité et la criminalité en France suscitent de vifs débats publics et politiques, souvent caractérisés par une simplification des facteurs explicatifs. Ce projet adopte une démarche scientifique et empirique visant à identifier et quantifier les déterminants sociodémographiques, économiques et territoriaux de la délinquance à l'échelle des 101 départements français.
+L'insécurité et la criminalité en France suscitent de vifs débats publics et politiques, souvent caractérisés par une simplification des facteurs explicatifs. Or, la violence constitue un phénomène complexe qui prend des formes profondément hétérogènes. Ce projet adopte une démarche scientifique et empirique visant à identifier et quantifier les déterminants sociodémographiques, économiques et territoriaux de ces différentes dimensions de la violence à l'échelle des 101 départements français.
 
 ### Intérêt et cas d'usage
 L'analyse apporte un éclairage statistique rigoureux utile aux analystes de politiques publiques, chercheurs en sciences sociales et décideurs institutionnels, en distinguant l'impact spécifique de la densité urbaine, de la précarité économique et du niveau de formation sur chaque typologie de délinquance.
