@@ -1,132 +1,148 @@
-# Déterminants de la Violence en France : Approche Économétrique Départementale
+# DÉTERMINANTS DE LA VIOLENCE EN FRANCE : APPROCHE ÉCONOMÉTRIQUE DÉPARTEMENTALE
 
-## 1. Introduction & Problématique
+## 1. INTRODUCTION
 
-L’insécurité et la violence en France occupent une place centrale dans le débat public. Pourtant, ces phénomènes souffrent souvent de simplifications ou de récupérations politiques. 
+### Cadre de réalisation
+Projet d'analyse économétrique et quantitative sur données territoriales françaises.
 
-Ce projet adopte une **approche rigoureuse et scientifique** pour identifier et quantifier les facteurs sociodémographiques, économiques et territoriaux qui influencent différents types de violences à l'échelle des 101 départements français.
+### Présentation du sujet et problématique
+L'insécurité et la criminalité en France suscitent de vifs débats publics et politiques, souvent caractérisés par une simplification des facteurs explicatifs. Ce projet adopte une démarche scientifique et empirique visant à identifier et quantifier les déterminants sociodémographiques, économiques et territoriaux de la délinquance à l'échelle des 101 départements français.
 
----
-
-## 2. Architecture des Données
-
-### A. Variables Explicatives (X) — Causes & Contexte
-
-| Nom Technique | Unité | Description | Source |
-| :--- | :---: | :--- | :---: |
-| `densite_population` | hab/km² | Densité de population | INSEE |
-| `population_insee` | Nombre | Population totale du département | INSEE |
-| `taux_chomage` | % | Part des actifs au chômage | INSEE |
-| `taux_pauvrete_60` | % | Part sous le seuil de pauvreté (à 60%) | INSEE |
-| `niveau_vie_median` | Euros | Revenu annuel médian | INSEE |
-| `part_jeunes_difficulte_lecture` | % | Difficultés de lecture décelées (JDC) | Min. Éduc. |
-| `part_non_diplomes` | % | Jeunes (15-24 ans) non diplômés et non scolarisés | INSEE |
-| `part_moins_25_ans` | % | Part de la population âgée de moins de 25 ans | INSEE |
-| `part_immigres` | % | Part des immigrés dans la population | INSEE |
-| `part_descendants_immigres` | % | Part des descendants d'immigrés | INSEE |
-| `trafic_stupefiants` | Taux ‰ | Taux de faits constatés pour trafic de stupéfiants | SSMSI |
-| `usage_stupefiants_total` | Taux ‰ | Taux de faits constatés pour usage de stupéfiants | SSMSI |
-
-### B. Variables Dépendantes (Y) — Crimes & Délits
-
-Toutes les variables de criminalité proviennent du SSMSI et sont exprimées en **Taux pour 1 000 habitants** (données 2020) afin de neutraliser l'effet de taille de la population.
-
-* **Crimes Graves :** `homicides`, `tentatives_homicide`, `violences_sexuelles`.
-* **Atteintes aux Personnes :** `violences_physiques_hors_famille`, `violences_physiques_intrafamiliales`.
-* **Atteintes aux Biens :** `vols_avec_armes`, `vols_violents_sans_arme`, `vols_sans_violence`, `cambriolages_logement`, `vols_vehicule`, `vols_dans_vehicules`, `vols_accessoires_vehicules`.
-* **Autres :** `destructions_degradations`, `escroqueries_fraudes`.
+### Intérêt et cas d'usage
+L'analyse apporte un éclairage statistique rigoureux utile aux analystes de politiques publiques, chercheurs en sciences sociales et décideurs institutionnels, en distinguant l'impact spécifique de la densité urbaine, de la précarité économique et du niveau de formation sur chaque typologie de délinquance.
 
 ---
 
-## 3. Pipeline de Traitement des Données (ETL)
+## 2. SOURCES ET DONNÉES
 
-Le projet suit un pipeline modulaire prévisible divisé en quatre phases principales :
+### Origine des données et périmètre
+L'étude exploite des données officielles associant les statistiques administratives de l'INSEE, du Ministère de l'Éducation Nationale et du Service Statistique Ministériel de la Sécurité Intérieure (SSMSI). Le périmètre d'analyse couvre l'année 2020 pour l'ensemble de la France métropolitaine (les départements d'Outre-Mer étant exclus pour des raisons d'homogénéité territoriale).
 
+### Variables explicatives (X)
+*   **densite_population** : Densité de population (habitants / km²) [INSEE]
+*   **population_insee** : Population totale du département [INSEE]
+*   **taux_chomage** : Part des actifs au chômage (%) [INSEE]
+*   **taux_pauvrete_60%** : Taux de pauvreté au seuil de 60% du revenu médian (%) [INSEE]
+*   **niveau_vie_median** : Niveau de vie médian annuel (Euros) [INSEE]
+*   **part_jeunes_difficulte_lecture** : Part des jeunes en difficulté de lecture à la JDC (%) [Ministère de l'Éducation Nationale]
+*   **part_non_diplomes** : Part des 15-24 ans non diplômés et non scolarisés (%) [INSEE]
+*   **part_moins_25_ans** : Part de la population âgée de moins de 25 ans (%) [INSEE]
+*   **part_immigres** : Part des immigrés dans la population totale (%) [INSEE]
+*   **part_descendants_immigres** : Part des descendants d'immigrés (%) [INSEE]
+*   **trafic_stupefiants** : Taux de faits constatés pour trafic de stupéfiants (‰) [SSMSI]
+*   **usage_stupefiants_total** : Taux de faits constatés pour usage de stupéfiants (‰) [SSMSI]
 
-[1. Fetch (Extraction)] ──> [2. Clean (Normalisation)] ──> [3. Structure (Jointure)] ──> [4. Model (Régression OLS)]
-
-
-### Phase 1 : Fetch (Extraction)
-* Centralisation de sources hétérogènes (fichiers CSV, extractions Excel multi-onglets).
-* Requêtes de tables HTML automatisées (via `pd.read_html`) directement depuis le site de l'INSEE pour récupérer le niveau de vie médian et le taux de pauvreté.
-
-### Phase 2 : Clean (Normalisation)
-* Suppression des en-têtes et lignes de commentaires spécifiques aux formats de publication de l'INSEE.
-* Standardisation des identifiants territoriaux via la méthode `str.zfill(2)` pour harmoniser les codes départements (ex: le code `1` devient `01`).
-* Gestion des valeurs masquées par le secret statistique en forçant la conversion des chaînes `'ns'` en `NaN`.
-* Pivotement de la base SSMSI pour transformer une structure longue en matrice d'analyse large (une colonne distincte par indicateur criminel).
-
-### Phase 3 : Structure (Jointure)
-* Jointure gauche systématique (`merge`) basée sur les référentiels géographiques officiels d'Etalab.
-* Filtrage de la portée de l'étude à la France métropolitaine par l'exclusion stricte des codes commençant par `97`.
-* Réorganisation logique des colonnes : *Métadonnées géographiques* ──> *Variables Explicatives (X)* ──> *Variables Expliquées (Y)*.
-* Sauvegarde et persistance de la structure nettoyée dans un fichier unique nommé `base_departements_complete_2020.csv`.
-
----
-
-## 4. Approche Méthodologique & Modélisation
-
-Une classification hiérarchique (méthode de Ward basée sur des corrélations de Spearman) a mis en évidence trois pôles distincts de délinquance. Pour éviter les biais de multicolinéarité et capturer les dynamiques réelles, chaque pôle est modélisé de manière indépendante via des régressions linéaires par moindres carrés ordinaires (OLS). Les variables finales ont été sélectionnées par procédure **Stepwise (Backward Elimination)**.
-
-### [Modèle 1] Cluster Crimes Graves (Focus Homicides)
-Les violences extrêmes s'avèrent hautement stochastiques à l'échelle départementale ($R^2 = 0.182$). Seul le chômage émerge comme signal prédictif significatif.
-
-> **Équation estimée :**
-> $$homicides = -0.0063 + 0.0022 \times taux\_chomage$$
-
-### [Modèle 2] Cluster Tensions Urbaines et Délinquance de Rue
-Création de l'*Indice de Tension Urbaine (ITU)* par sommation des variables cohérentes du bloc (`dégradations` + `violences physiques intrafamiliales et hors famille`).
-
-> **Équation estimée :**
-> $$ITU = 0.7967 + 0.8456 \times \ln(densite\_population) + 0.3285 \times part\_non\_diplomes$$
-
-* **Performance :** $R^2 = 0.615$ (Modèle statistiquement très robuste).
-* **Enseignement :** Le déficit de formation (absence de diplôme) est le prédicteur social le plus puissant, surpassant l'impact du revenu seul.
-
-### [Modèle 3] Cluster Vols et Urbanisation
-Agrégation des infractions d'appropriation sous la variable unique `Total_Vols` afin de stabiliser le signal en lissant la volatilité et le bruit local.
-
-> **Équation estimée :**
-> $$Total\_Vols = -17.4076 + 5.6564 \times \ln(densite\_population) + 0.4666 \times taux\_pauvrete\_60$$
-
-* **Performance :** $R^2 = 0.621$.
-* **Enseignement :** Le modèle décrit une mécanique d'opportunité spatiale pure. La délinquance d'appropriation se cristallise là où la précarité économique (+4.67 vols pour 10 points de pauvreté) rencontre la concentration de cibles potentielles engendrée par la densité urbaine.
+### Variables dépendantes (Y)
+Afin de neutraliser l'effet de taille démographique, l'ensemble des indicateurs de criminalité est exprimé en taux pour 1 000 habitants (données 2020) :
+*   **Crimes Graves** : Homicides, tentatives d'homicide, violences sexuelles.
+*   **Atteintes aux Personnes** : Violences physiques intrafamiliales, violences physiques hors famille.
+*   **Atteintes aux Biens** : Vols avec armes, vols violents sans arme, vols sans violence, cambriolages de logement, vols de véhicule, vols dans les véhicules, vols d'accessoires sur véhicules.
+*   **Autres infractions** : Destructions et dégradations, escroqueries et fraudes.
 
 ---
 
-## 5. Visualisations Dynamiques
+## 3. MÉTHODOLOGIE ET DÉTAILS TECHNIQUES
 
-Le notebook intègre des composants d'interface utilisateur avancés pour explorer les résultats :
+### Pipeline de traitement (ETL)
+1. **Fetch (Extraction)** : Ingestion automatisée de fichiers CSV et Excel multi-onglets. Extraction directe de tables HTML via `pandas.read_html` depuis le site de l'INSEE pour les variables de pauvreté et de niveau de vie.
+2. **Clean (Normalisation)** :
+   * Nettoyage des métadonnées et en-têtes complexes.
+   * Harmonisation des codes départements sur deux caractères via la méthode `str.zfill(2)`.
+   * Traitement du secret statistique en convertissant la chaîne `'ns'` en valeurs manquantes (`NaN`).
+   * Pivotement de la base SSMSI du format long vers un format large (matrice individus-variables).
+3. **Structure (Jointure)** :
+   * Appariement par jointure gauche sur le code département via le référentiel géospatial d'Etalab.
+   * Filtrage strict sur la France métropolitaine (exclusion des codes `97`).
+   * Consolidation et exportation de la matrice d'analyse `base_departements_complete_2020.csv`.
 
-* **Analyse de performance interactive :** Un menu déroulant `ipywidgets` lié à des graphiques `Plotly` permettant de confronter graphiquement les valeurs réelles aux valeurs prédites par les modèles. Cela met en évidence l'effet de *shrinkage* (régression vers la moyenne) sur les variables à faible pouvoir explicatif.
-* **Cartographie interactive double :** Cartes choroplèthes propulsées par `Folium` et structurées via un fichier GeoJSON simplifié de la France. L'affichage juxtapose systématiquement la carte des **effectifs bruts** (naturellement biaisée par la démographie) et la carte des **taux pour 1 000 habitants**, permettant une lecture objective de l'insécurité territoriale.
+### Approche économétrique
+Une classification ascendante hiérarchique (méthode de Ward basée sur la matrice de corrélation de Spearman) identifie trois blocs distincts de délinquance. Pour traiter la multicolinéarité et capturer les déterminants propres à chaque dimension, chaque cluster est estimé par régression linéaire (Moindres Carrés Ordinaires - OLS) avec sélection de variables par élimination descendante (Stepwise Backward).
+
+#### Modèle 1 : Cluster Crimes Graves (Focus Homicides)
+*   **Spécification** : 
+    $$\text{homicides} = -0.0063 + 0.0022 \times \text{taux\_chomage}$$
+*   **R²** : $0.182$
+*   **Analyse** : Les crimes extrêmes présentent une composante stochastique marquée au niveau départemental. Seul le taux de chômage ressort comme variable explicative statistiquement significative.
+
+#### Modèle 2 : Cluster Tensions Urbaines et Délinquance de Rue
+*   **Variable synthétique** : Indice de Tension Urbaine (ITU) construit par agrégation des dégradations et des violences physiques (intrafamiliales et hors famille).
+*   **Spécification** : 
+    $$\text{ITU} = 0.7967 + 0.8456 \times \ln(\text{densite\_population}) + 0.3285 \times \text{part\_non\_diplomes}$$
+*   **R²** : $0.615$
+*   **Analyse** : Le modèle présente une forte puissance explicative. Le niveau de sous-diplômation apparaît comme un prédicteur structurel plus explicatif que le seul revenu monétaire.
+
+#### Modèle 3 : Cluster Vols et Urbanisation
+*   **Variable synthétique** : Agrégation des infractions d'appropriation (`Total_Vols`).
+*   **Spécification** : 
+    $$\text{Total\_Vols} = -17.4076 + 5.6564 \times \ln(\text{densite\_population}) + 0.4666 \times \text{taux\_pauvrete\_60\%}$$
+*   **R²** : $0.621$
+*   **Analyse** : Les vols répondent à une logique d'opportunité spatiale : ils s'intensifient lorsque la précarité économique s'associe à une forte densité d'opportunités d'infraction.
+
+### Technologies et bibliothèques
+*   **Langage** : Python 3.10+
+*   **Manipulation et ETL** : `pandas`, `numpy`
+*   **Économétrie et Modélisation** : `statsmodels`, `scikit-learn`, `scipy`
+*   **Visualisation et Cartographie** : `plotly`, `folium`, `seaborn`, `matplotlib`, `branca`, `ipywidgets`, `itables`
 
 ---
 
-## 6. Structure du Dépôt
+## 4. CONCLUSION ET RÉSULTATS CLÉS
 
+### Principaux enseignements
+1. **Hétérogénéité des facteurs explicatifs** : Il n'existe pas une cause unique à la délinquance. Les crimes graves relèvent en partie d'une dynamique stochastique, tandis que la délinquance de rue et la délinquance d'appropriation sont fortement structurées par des variables territoriales et socio-économiques.
+2. **Rôle prédominant de la densité urbaine** : La concentration spatiale est le premier déterminant des vols et des tensions urbaines.
+3. **Impact des déficits de formation** : Le taux de jeunes non diplômés constitue un prédicteur des tensions urbaines supérieur aux seuls indicateurs monétaires.
+
+### Visualisations interactives et interfaces
+*   **Diagnostic des modèles** : Module interactif (`ipywidgets` + `Plotly`) permettant de comparer les valeurs observées et ajustées pour évaluer les effets de régression vers la moyenne.
+*   **Analyse cartographique** : Cartes choroplèthes interactives (`Folium` + `GeoJSON`) juxtaposant les effectifs bruts et les taux pour 1 000 habitants afin d'éviter les biais d'interprétation liés à la taille des populations.
+
+### Limites et perspectives
+*   **Modélisation spatiale** : L'intégration d'un modèle économétrique spatial (type SAR/SEM) permettrait de prendre en compte l'autocorrélation spatiale et les effets de débordement interdépartementaux.
+*   **Maillage géographique** : Une analyse à l'échelle communale ou infra-communale (IRIS) affinerait la détection des micro-dynamiques locales.
+
+---
+
+## 5. STRUCTURE DU DÉPÔT
 
 ```text
 .
 ├── DATA_PROJET/
-│   ├── base_departements_complete_2020.csv  # Données néttoyées et prêtes à l'emploi, exportées en csv.
-│   ├── departements-france.csv             # Référentiel géographique.
-│   └── [Fichiers sources bruts INSEE/SSMSI] # Fichiers de données bruts.
-├── violence.ipynb                           # Notebook principal de production.
-└── README.md                                # Présentation du projet.                                    
-
+│   ├── base_departements_complete_2020.csv  # Matrice d'analyse nettoyée et consolidée
+│   ├── departements-france.csv             # Référentiel géospatial officiel
+│   └── [Sources brutes INSEE/SSMSI]        # Données brutes et extractions d'origine
+├── violence.ipynb                           # Notebook principal (ETL, économétrie, cartes)
+└── README.md                                # Documentation du projet
 ```
 
 ---
 
-## 7. Spécifications Techniques
+## 6. INSTALLATION ET REPRODUCTION
 
-* **Langage maître :** Python 3.10+
-* **Modélisation Économétrique :** Librairie `statsmodels` (analyses OLS exhaustives et extraction des summaries de performance)
-* **Visualisation Spatiale et Graphique :** `folium`, `branca`, `plotly`, `seaborn` et `matplotlib`
-* **Formatage des Tableaux :** `itables` pour un rendu HTML dynamique au sein de l'environnement Jupyter.
+### Prérequis
+*   Python 3.10 ou supérieur
+*   Environnement Jupyter (Jupyter Lab ou Jupyter Notebook)
 
+### Installation des dépendances
 
+```bash
+# Cloner le dépôt
+git clone [https://github.com/utilisateur/determinants-violence-france.git](https://github.com/utilisateur/determinants-violence-france.git)
+cd determinants-violence-france
 
+# Créer et activer un environnement virtuel
+python -m venv venv
+source venv/bin/activate  # Sur Windows: venv\Scripts\activate
 
+# Installer les packages requis
+pip install pandas numpy statsmodels scikit-learn scipy plotly folium seaborn matplotlib branca ipywidgets itables
+```
 
+### Exécution du projet
+
+```bash
+# Lancer Jupyter Lab
+jupyter lab
+```
+
+Ouvrir le fichier `violence.ipynb` et exécuter l'ensemble des cellules dans l'ordre séquentiel pour reproduire l'ETL, les estimations économétriques et les visualisations interactives.
