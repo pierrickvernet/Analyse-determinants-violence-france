@@ -40,22 +40,22 @@ L'étude exploite des données officielles associant les statistiques administra
 
 ### 2. Variables Dépendantes (Y) — Crimes & Délits
 
-| Nom Technique | Unité | Description | Lien URL |
+| Nom Technique | Unité | Description | Source & Lien |
 | :--- | :--- | :--- | :--- |
-| `homicides` | **Taux ‰** | Homicides | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `tentatives_homicide` | **Taux ‰** | Tentatives d'homicide | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `violences_physiques_hors_famille` | **Taux ‰** | Violences physiques hors cadre familial | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `violences_physiques_intrafamiliales` | **Taux ‰** | Violences physiques intrafamiliales | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `violences_sexuelles` | **Taux ‰** | Violences sexuelles | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_avec_armes` | **Taux ‰** | Vols commis avec une arme | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_violents_sans_arme` | **Taux ‰** | Vols violents sans arme | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_sans_violence` | **Taux ‰** | Vols sans violence contre des personnes | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `cambriolages_logement` | **Taux ‰** | Cambriolages de logement | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_vehicule` | **Taux ‰** | Vols de véhicule | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_dans_vehicules` | **Taux ‰** | Vols dans les véhicules | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `vols_accessoires_vehicules` | **Taux ‰** | Vols d'accessoires sur véhicules | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `destructions_degradations` | **Taux ‰** | Destructions et dégradations volontaires | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
-| `escroqueries_fraudes` | **Taux ‰** | Escroqueries et fraudes | [Lien](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `homicides` | **Taux ‰** | Homicides | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `tentatives_homicide` | **Taux ‰** | Tentatives d'homicide | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_physiques_hors_famille` | **Taux ‰** | Violences physiques hors cadre familial | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_physiques_intrafamiliales` | **Taux ‰** | Violences physiques intrafamiliales | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `violences_sexuelles` | **Taux ‰** | Violences sexuelles | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_avec_armes` | **Taux ‰** | Vols commis avec une arme | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_violents_sans_arme` | **Taux ‰** | Vols violents sans arme | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_sans_violence` | **Taux ‰** | Vols sans violence contre des personnes | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `cambriolages_logement` | **Taux ‰** | Cambriolages de logement | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_vehicule` | **Taux ‰** | Vols de véhicule | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_dans_vehicules` | **Taux ‰** | Vols dans les véhicules | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `vols_accessoires_vehicules` | **Taux ‰** | Vols d'accessoires sur véhicules | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `destructions_degradations` | **Taux ‰** | Destructions et dégradations volontaires | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
+| `escroqueries_fraudes` | **Taux ‰** | Escroqueries et fraudes | [Lien Unique SSMSI](https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales/) |
 
 ---
 
