@@ -131,12 +131,12 @@ Une classification ascendante hiérarchique (méthode de Ward basée sur la matr
 
 ```text
 .
-├── DATA_PROJET/                     ----------- # DONNÉES BIENTÔT DISPONIBLES ! -----------
-│   ├── base_departements_complete_2020.csv  # Matrice d'analyse nettoyée et consolidée
+├── DATA_PROJET/                     
+│   ├── base_departements_complete_2020.csv  # Base de données nettoyée, puis exportée en .csv
 │   ├── departements-france.csv              # Référentiel géospatial officiel
 │   └── [Sources brutes INSEE/SSMSI]         # Données brutes et extractions d'origine 
 ├── README.md                                # Documentation du projet
-└── violence.ipynb                           # Notebook principal (ETL, économétrie, graphiques)
+└── violence.ipynb                           # Notebook principal (AED, économétrie, graphiques)
 
 ```
 
